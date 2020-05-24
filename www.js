@@ -7,7 +7,8 @@ const finalhandler = require('finalhandler');
 const {
   STATIC_DIR = 'dist',
   HOST_PORT = process.env.PORT || 80,
-  API_URL = 'http://localhost:3005'
+  API_URL = 'http://localhost:3005',
+  CONTENT_SECURITY_POLICY = ''
 } = process.env;
 
 const metaTags = Object.keys(process.env).reduce((env, name) =>
@@ -39,6 +40,12 @@ const setCaching = (req, res) => {
   }
 };
 
+const setCSP = (res) => {
+  if (CONTENT_SECURITY_POLICY !== '') {
+    res.setHeader('Content-Security-Policy', CONTENT_SECURITY_POLICY);
+  }
+};
+
 const ASSET_PATH_RE = /\.(html|css$|js$|json|webapp|cache|jpg|svg|png|ico|txt|eot|ttf|woff|woff2)/;
 const server = http.createServer((req, res) => {
   if (req.url === '/_health/ready' || req.url === '/_health/alive') {
@@ -49,6 +56,7 @@ const server = http.createServer((req, res) => {
     res.end(metaAmmendedIndex);
   } else {
     setCaching(req, res);
+    setCSP(res);
     serve(req, res, finalhandler(req, res));
   }
 });

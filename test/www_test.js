@@ -123,3 +123,12 @@ describe('caching headers', () => {
     });
   });
 });
+
+describe('Content-Security-Policy headers', () => {
+  it('sets header from env var', (done) => {
+    http.get('http://localhost:9000/app.js', (res) => {
+      res.headers['content-security-policy'].must.eql(process.env.CONTENT_SECURITY_POLICY);
+      done();
+    });
+  });
+});
