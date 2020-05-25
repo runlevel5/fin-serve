@@ -51,12 +51,12 @@ const server = http.createServer((req, res) => {
   if (req.url === '/_health/ready' || req.url === '/_health/alive') {
     res.end('OK');
   }
+  setCSP(res);
   if (!ASSET_PATH_RE.test(req.url)) {
     req.url = '/';
     res.end(metaAmmendedIndex);
   } else {
     setCaching(req, res);
-    setCSP(res);
     serve(req, res, finalhandler(req, res));
   }
 });
