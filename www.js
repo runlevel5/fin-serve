@@ -50,6 +50,7 @@ const ASSET_PATH_RE = /\.(html|css$|js$|json|webapp|cache|jpg|svg|png|ico|txt|eo
 const server = http.createServer((req, res) => {
   if (req.url === '/_health/ready' || req.url === '/_health/alive') {
     res.end('OK');
+    return;
   }
   setCSP(res);
   if (!ASSET_PATH_RE.test(req.url)) {
