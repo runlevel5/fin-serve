@@ -47,15 +47,19 @@ const setCSP = (res) => {
 };
 
 const ASSET_PATH_RE = /\.(html|css$|js$|json|webapp|cache|jpg|svg|png|ico|txt|eot|ttf|woff|woff2)/;
+const USER_AGENT_RE = /trident|msie/i;
 const server = http.createServer((req, res) => {
   if (req.url === '/_health/ready' || req.url === '/_health/alive') {
     res.end('OK');
     return;
   }
   setCSP(res);
+
   if (!ASSET_PATH_RE.test(req.url)) {
     req.url = '/';
     res.end(metaAmmendedIndex);
+  } else if (USER_AGENT_RE.test(req.headers['user-agent']) && req.url.endsWith('.js')) {
+    res.end('document.write(<h1>Shortlyster does not support your web browser. For a better experience, we recommend you use Microsoft Edge or another supported browser</h1>);');
   } else {
     setCaching(req, res);
     serve(req, res, finalhandler(req, res));

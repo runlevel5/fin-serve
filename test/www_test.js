@@ -16,6 +16,7 @@ const asset = `<!DOCTYPE html>
 
 `;
 const jsAsset = fs.readFileSync('test/fixtures/app.js').toString();
+const ie11jsAsset = 'document.write(<h1>Shortlyster does not support your web browser. For a better experience, we recommend you use Microsoft Edge or another supported browser</h1>);';
 
 describe('/', () => {
   it('should return 200', (done) => {
@@ -68,6 +69,21 @@ describe('/', () => {
 
       res.on('end', () => {
         data.must.equal(jsAsset);
+        done();
+      });
+    });
+  });
+
+  it('should return ie rejection stubbed js assets', (done) => {
+    http.get('http://localhost:9000/app.js', { headers: { 'user-agent': 'Trident/7.0' } }, (res) => {
+      let data = '';
+
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+
+      res.on('end', () => {
+        data.must.equal(ie11jsAsset);
         done();
       });
     });
