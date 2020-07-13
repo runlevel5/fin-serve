@@ -21,14 +21,14 @@
   "author": "Prismatik",
   "license": "ISC",
   "devDependencies": {
-    "eslint": "^3.6.0",
+    "eslint": "^7.4.0",
     "eslint-config-prismatik": "^2.2.0",
     "istanbul": "^0.4.5",
-    "mocha": "^5.2.0",
+    "mocha": "^8.0.1",
     "must": "^0.13.2"
   },
   "dependencies": {
-    "finalhandler": "^1.1.1",
-    "serve-static": "^1.11.1"
+    "finalhandler": "^1.1.2",
+    "serve-static": "^1.14.1"
   }
 }
