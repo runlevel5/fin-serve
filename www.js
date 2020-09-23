@@ -34,9 +34,15 @@ console.log('Serving your files now!');
 
 const ONE_MONTH = 2628000;
 const MD5_HASHED_RESOURCE = /-[a-f0-9]{20,32}\.(js|css|jpg|svg|ico|eot|ttf|woff|woff2)(\?|$)/i;
+const INDEX_RE = /index\.html$/;
+
 const setCaching = (req, res) => {
   if (MD5_HASHED_RESOURCE.test(req.url)) {
     res.setHeader('Cache-Control', `public, max-age=${ONE_MONTH}`);
+  } else if (INDEX_RE.test(req.url)) {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
   }
 };
 

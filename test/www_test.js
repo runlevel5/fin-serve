@@ -122,6 +122,15 @@ describe('caching headers', () => {
       done();
     });
   });
+
+  it('disables caching of html resources', (done) => {
+    http.get('http://localhost:9000/index.html', (res) => {
+      res.headers['cache-control'].must.eql('no-cache, no-store, must-revalidate');
+      res.headers.pragma.must.eql('no-cache');
+      res.headers.expires.must.eql('0');
+      done();
+    });
+  });
 });
 
 describe('Content-Security-Policy headers', () => {
