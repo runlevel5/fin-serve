@@ -34,15 +34,10 @@ console.log('Serving your files now!');
 
 const ONE_MONTH = 2628000;
 const MD5_HASHED_RESOURCE = /-[a-f0-9]{20,32}\.(js|css|jpg|svg|ico|eot|ttf|woff|woff2)(\?|$)/i;
-const INDEX_RE = /index\.html$/;
 
 const setCaching = (req, res) => {
   if (MD5_HASHED_RESOURCE.test(req.url)) {
     res.setHeader('Cache-Control', `public, max-age=${ONE_MONTH}`);
-  } else if (INDEX_RE.test(req.url)) {
-    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
   }
 };
 
@@ -53,6 +48,7 @@ const setCSP = (res) => {
 };
 
 const ASSET_PATH_RE = /\.(html|css$|js$|json|webapp|cache|jpg|svg|png|ico|txt|eot|ttf|woff|woff2)/;
+
 const server = http.createServer((req, res) => {
   if (req.url === '/_health/ready' || req.url === '/_health/alive') {
     res.end('OK');
@@ -61,6 +57,17 @@ const server = http.createServer((req, res) => {
   setCSP(res);
   if (!ASSET_PATH_RE.test(req.url)) {
     req.url = '/';
+
+    /*
+     * Disable caching of our html pages
+     * These should always update so if our js has changed it will fetch the new bundler
+     *
+     * http://cristian.sulea.net/blog/disable-browser-caching-with-meta-html-tags/
+     */
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+
     res.end(metaAmmendedIndex);
   } else {
     setCaching(req, res);

@@ -123,8 +123,8 @@ describe('caching headers', () => {
     });
   });
 
-  it('disables caching of html resources', (done) => {
-    http.get('http://localhost:9000/index.html', (res) => {
+  it('disables caching of standard routes', (done) => {
+    http.get('http://localhost:9000/signin', (res) => {
       res.headers['cache-control'].must.eql('no-cache, no-store, must-revalidate');
       res.headers.pragma.must.eql('no-cache');
       res.headers.expires.must.eql('0');
