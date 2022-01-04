@@ -3,12 +3,12 @@ const fs = require('fs');
 const http = require('http');
 const serveStatic = require('serve-static');
 const finalhandler = require('finalhandler');
-
 const {
   STATIC_DIR = 'dist',
   HOST_PORT = process.env.PORT || 80,
   API_URL = 'http://localhost:3005',
-  CONTENT_SECURITY_POLICY = ''
+  CONTENT_SECURITY_POLICY = '',
+  FRAME_DENY = 'true'
 } = process.env;
 
 const metaTags = Object.keys(process.env).reduce((env, name) =>
@@ -40,11 +40,15 @@ const setCaching = (req, res) => {
   }
 };
 
-const setCSP = (res) => {
+const setSecurityHeaders = (res) => {
+  if (FRAME_DENY === 'true') {
+    res.setHeader('X-Frame-Options', 'DENY');
+  }
+
   if (CONTENT_SECURITY_POLICY !== '') {
     res.setHeader('Content-Security-Policy', CONTENT_SECURITY_POLICY);
   }
-};
+}
 
 const ASSET_PATH_RE = /\.(html|css$|js$|json|webapp|cache|jpg|svg|png|ico|txt|eot|ttf|woff|woff2)/;
 const server = http.createServer((req, res) => {
@@ -52,7 +56,8 @@ const server = http.createServer((req, res) => {
     res.end('OK');
     return;
   }
-  setCSP(res);
+  setSecurityHeaders(res);
+
   if (!ASSET_PATH_RE.test(req.url)) {
     req.url = '/';
     res.end(metaAmmendedIndex);
