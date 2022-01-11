@@ -3,6 +3,7 @@ const fs = require('fs');
 const http = require('http');
 const serveStatic = require('serve-static');
 const finalhandler = require('finalhandler');
+
 const {
   STATIC_DIR = 'dist',
   HOST_PORT = process.env.PORT || 80,
@@ -48,7 +49,7 @@ const setSecurityHeaders = (res) => {
   if (CONTENT_SECURITY_POLICY !== '') {
     res.setHeader('Content-Security-Policy', CONTENT_SECURITY_POLICY);
   }
-}
+};
 
 const ASSET_PATH_RE = /\.(html|css$|js$|json|webapp|cache|jpg|svg|png|ico|txt|eot|ttf|woff|woff2)/;
 const server = http.createServer((req, res) => {
