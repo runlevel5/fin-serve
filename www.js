@@ -61,9 +61,9 @@ const setSecurityHeaders = (res) => {
   }
 
   if (FORCE_STS_HEADER === 'true') {
-    let stsOptions = [];
+    const stsOptions = [];
     if (STS_SECONDS !== '') {
-      stsOptions.push('max-age=' + STS_SECONDS);
+      stsOptions.push(`max-age=${STS_SECONDS}`);
     }
     if (STS_PRELOAD === 'true') {
       stsOptions.push('preload');
@@ -71,7 +71,7 @@ const setSecurityHeaders = (res) => {
     if (STS_INCLUDE_SUBDOMAINS === 'true') {
       stsOptions.push('includeSubDomains');
     }
-    res.setHeader('Strict-Transport-Security', stsOptions.join("; "));
+    res.setHeader('Strict-Transport-Security', stsOptions.join('; '));
   }
 
   if (CONTENT_TYPE_NO_SNIFF === 'true') {
