@@ -52,17 +52,17 @@ const setSecurityHeaders = (res) => {
     res.setHeader('X-Frame-Options', 'DENY');
   }
 
-  if (CONTENT_SECURITY_POLICY !== '') {
+  if (CONTENT_SECURITY_POLICY) {
     res.setHeader('Content-Security-Policy', CONTENT_SECURITY_POLICY);
   }
 
-  if (REFERRER_POLICY !== '') {
+  if (REFERRER_POLICY) {
     res.setHeader('Referrer-Policy', REFERRER_POLICY);
   }
 
   if (FORCE_STS_HEADER === 'true') {
     const stsOptions = [];
-    if (STS_SECONDS !== '') {
+    if (STS_SECONDS) {
       stsOptions.push(`max-age=${STS_SECONDS}`);
     }
     if (STS_PRELOAD === 'true') {
