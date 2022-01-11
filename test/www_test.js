@@ -131,4 +131,11 @@ describe('Content-Security-Policy headers', () => {
       done();
     });
   });
+
+  it('sets x-frame-header', (done) => {
+    http.get('http://localhost:9000/app.js', (res) => {
+      res.headers['x-frame-options'].must.eql('DENY');
+      done();
+    });
+  });
 });
