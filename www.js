@@ -9,13 +9,13 @@ const {
   HOST_PORT = process.env.PORT || 80,
   API_URL = 'http://localhost:3005',
   CONTENT_SECURITY_POLICY,
-  FRAME_DENY = 'true',
-  REFERRER_POLICY = 'strict-origin-when-cross-origin',
-  FORCE_STS_HEADER = 'true',
-  STS_SECONDS = '31536000',
-  STS_PRELOAD = 'true',
-  STS_INCLUDE_SUBDOMAINS = 'true',
-  CONTENT_TYPE_NO_SNIFF = 'true'
+  FRAME_DENY,
+  REFERRER_POLICY,
+  FORCE_STS_HEADER,
+  STS_SECONDS,
+  STS_PRELOAD,
+  STS_INCLUDE_SUBDOMAINS,
+  CONTENT_TYPE_NO_SNIFF
 } = process.env;
 
 const metaTags = Object.keys(process.env).reduce((env, name) =>
