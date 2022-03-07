@@ -32,6 +32,9 @@ const normalIndex = fs.readFileSync(`${STATIC_DIR}/index.html`, 'utf8');
 const metaAmmendedIndex = !normalIndex ? '' :
   normalIndex.split('\n').reduce((full, line) => {
     full += `${line}\n`;
+    // NOTE: The logic assumes that the `<head>` tag is on its own line
+    // please make sure you don't use one-line minified HTML
+    // TODO: improve this code so it would inject the tags inside head tag correctly
     if (line.includes('<head>')) full += `  ${metaString}\n`;
     return full;
   }, '');
